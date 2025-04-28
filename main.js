@@ -1,3 +1,5 @@
+
+
 // Room objects
 const rooms = [
   {
@@ -203,7 +205,9 @@ document.querySelector(".currentTemp").innerText = `${rooms[0].currTemp}°`;
 // Add new options from rooms array
 rooms.forEach((room) => {
   const option = document.createElement("option");
-  option.value = room;
+  //first change
+  option.value = room.name;
+  console.log(option.value)
   option.textContent = room.name;
   roomSelect.appendChild(option);
 });
@@ -227,9 +231,11 @@ const setSelectedRoom = (selectedRoom) => {
 };
 
 roomSelect.addEventListener("change", function () {
+ 
   selectedRoom = this.value;
 
   setSelectedRoom(selectedRoom);
+  console.log(selectedRoom)
 });
 
 
@@ -240,12 +246,18 @@ defaultSettings.addEventListener("click", function (e) {});
 // Increase and decrease temperature
 document.getElementById("increase").addEventListener("click", () => {
   const room = rooms.find((currRoom) => currRoom.name === selectedRoom);
-  const increaseRoomTemperature = room.increaseTemp;
+//ssecond change
+
+  const increaseRoomTemperature = room.increaseTemp();
+  console.log(increaseRoomTemperature)
 
   if (room.currTemp < 32) {
-    increaseRoomTemperature();
+      // Increase the temperature by 1 degree, ssecond change
+    increaseRoomTemperature;
+    console.log(increaseRoomTemperature)
   }
-
+ 
+ 
   setIndicatorPoint(room.currTemp);
   currentTemp.textContent = `${room.currTemp}°`;
 
@@ -261,10 +273,13 @@ document.getElementById("increase").addEventListener("click", () => {
 
 document.getElementById("reduce").addEventListener("click", () => {
   const room = rooms.find((currRoom) => currRoom.name === selectedRoom);
-  const decreaseRoomTemperature = room.decreaseTemp;
+  // third change
+  const decreaseRoomTemperature = room.decreaseTemp();
+  console.log(decreaseRoomTemperature)
 
   if (room.currTemp > 10) {
-    decreaseRoomTemperature();
+    //third change i do not need to call the function again since it is already called in the object
+    decreaseRoomTemperature;
   }
 
   setIndicatorPoint(room.currTemp);
@@ -301,25 +316,35 @@ document.getElementById("close").addEventListener("click", () => {
 document.getElementById("save").addEventListener("click", () => {
   const coolInput = document.getElementById("coolInput");
   const warmInput = document.getElementById("warmInput");
+
+  console.log(typeof +coolInput.value,typeof +warmInput.value)
+  
   const errorSpan = document.querySelector(".error");
 
-  if (coolInput.value && warmInput.value) {
+  if (coolInput.value && warmInput.value ) {
+    errorSpan.style.display = "none";
+  
+  }
+// compairng a string and a number was the issue fourth issue
+  if (+coolInput.value && +warmInput.value) {
     // Validate the data
-    if (coolInput.value < 10 || coolInput.value > 25) {
+    if (Number(coolInput.value) < 10 || Number(coolInput.value) > 25) {
       errorSpan.style.display = "block";
       errorSpan.innerText = "Enter valid temperatures (10° - 32°)";
+      return;
     }
 
-    if (warmInput.value < 25 || warmInput.value > 32) {
+    if (+warmInput.value < 25 || +warmInput.value > 32) {
       errorSpan.style.display = "block";
       errorSpan.innerText = "Enter valid temperatures (10° - 32°)";
+      return;
     }
     // Validation passed
     // Set current room's presets
     const currRoom = rooms.find((room) => room.name === selectedRoom);
 
-    currRoom.setColdPreset(coolInput.value);
-    currRoom.setWarmPreset(warmInput.value);
+    currRoom.setColdPreset(+coolInput.value);
+    currRoom.setWarmPreset(+warmInput.value);
 
     coolInput.value = "";
     warmInput.value = "";
@@ -348,7 +373,7 @@ const generateRooms = () => {
          
           <span class="room-status" style="display: ${
             room.airConditionerOn ? "" : "none"
-          }">${room.currTemp > 25 ? "Cooling room to: " : "Warming room to: "}${
+          }">${room.currTemp > 25 ? " Warming room to: " : "Cooling room to: "}${
       room.currTemp
     }°</span>
         </div>
