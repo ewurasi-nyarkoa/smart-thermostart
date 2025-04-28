@@ -1,0 +1,393 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-light: #eaeaeb;
+  --text-primary: #515155;
+  --text-secondary: #7c7c83;
+  --cool-blue: #4458c3;
+  --warm-red: #ec6062;
+  --accent: #ffd7a8;
+}
+
+body,
+input,
+select,
+option,
+button {
+  font-family: "Manrope", sans-serif;
+  color: var(--text-primary);
+}
+
+body {
+  padding: 50px 0;
+  min-height: 100vh;
+  background-color: var(--bg-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 450px;
+}
+
+.main-container {
+  display: flex;
+  gap: 20px;
+  align-items: start;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 30px 0;
+}
+
+.logo {
+  font-size: 20px;
+}
+
+#rooms {
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  font-weight: 500;
+}
+
+.info {
+  text-align: center;
+}
+.info p,
+.controls p {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: 3px;
+}
+
+.temperature {
+  position: relative;
+  /* border: solid 2px pink; */
+}
+
+.temperature svg {
+  /* border: solid 1px black; */
+  position: absolute;
+  left: -100px;
+  top: -68px;
+  height: 250px;
+  /* margin: 50px 0 50px 0; */
+  display: none;
+}
+.indicator {
+  position: relative;
+  display: none;
+}
+
+svg.point {
+  /* display: none; */
+  /* border: solid 1px pink; */
+  position: absolute;
+  left: 38px;
+  top: 40px;
+  height: 24px;
+  z-index: 10;
+  transition: transform 0.2s ease-in-out;
+  /* transform: translate(18px, -60px); */
+}
+
+#temp {
+  font-size: 72px;
+}
+
+.temp-range {
+  display: none;
+  position: relative;
+  width: 100%;
+  height: 8px;
+  margin: 20px 0 0 0;
+  border-radius: 25px;
+  width: 80%;
+  background: linear-gradient(to right, var(--cool-blue), var(--warm-red));
+}
+.knob {
+  position: absolute;
+  top: -3px;
+  left: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  outline: solid 3px white;
+  background-color: var(--text-secondary);
+  transition: left 0.2s ease-in-out;
+}
+
+.inner {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+}
+.default-settings {
+  margin: 30px 0 20px 0;
+  padding: 10px;
+  border-radius: 60px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  background-color: #eaeaeb;
+}
+
+.configure {
+  margin: 0 0 20px 0;
+}
+
+.inputs {
+  margin: 0 0 20px 0;
+  /* border: solid 1px pink; */
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.inputs input {
+  padding: 8px 5px;
+  width: 100px;
+  border: none;
+  background-color: #eaeaeb;
+  border-radius: 4px;
+  outline: none;
+}
+
+.inputs #save {
+  border: none;
+  background-color: var(--cool-blue);
+  color: #ffffff;
+  font-weight: 500;
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.inputs #close {
+  border: none;
+  background: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.error {
+  color: #ec6062;
+  text-align: center;
+  margin: 10px 0 0 0;
+}
+
+#newPreset {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: #4458c3;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: underline;
+  transition: color 0.2s ease-in-out;
+}
+
+#newPreset:hover {
+  color: #6b7ff0;
+}
+
+#cool,
+#warm {
+  background-color: #d9d9d9;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+  gap: 5px;
+}
+
+#cool:hover,
+#warm:hover,
+#reduce:hover,
+#increase:hover {
+  background-color: #c2c2c2;
+}
+
+.controls {
+  margin: 20px 0 0 0;
+}
+
+.controls p {
+  font-size: 14px;
+  margin: 0 0 10px 0;
+}
+
+.buttons {
+  /* border: solid 1px pink; */
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+#reduce,
+#increase {
+  border: none;
+  padding: 10px;
+  background-color: #eaeaeb;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.hidden {
+  display: none;
+}
+
+.room {
+  width: 100%;
+  height: 200px;
+  margin: 0 0 30px 0;
+  position: relative;
+  /* background-image: url("./assets/living-room.jpg"); */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  padding: 20px;
+  transition: background 0.2s ease-in;
+}
+.room .text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  z-index: 10;
+}
+
+.room-control {
+  padding: 30px 0 30px 0;
+  border-bottom: solid 1px #e7e7e7;
+}
+
+.room-control:first-child {
+  padding-top: 0;
+}
+
+.room-control:last-child {
+  margin-bottom: 0;
+  border: none;
+}
+
+.room-control .top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.room-control .top button.switch {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: solid 1px #d7d7d7;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in;
+}
+
+.room-control .top button.switch:hover {
+  background-color: #d5d5d5;
+}
+
+.room-control .top button.switch ion-icon {
+  font-size: 24px;
+  pointer-events: none;
+}
+
+.time-display {
+  display: flex; /* Make time elements horizontal */
+  justify-content: space-between;
+  gap: 10px;
+  border: solid 1px #e7e7e7;
+  margin: 20px 0 0 0;
+  padding: 10px 20px;
+  border-radius: 26px;
+  font-size: 14px;
+}
+
+.bars {
+  /* border: solid 1px pink; */
+  /* width: 100%; */
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.bar {
+  display: inline-block;
+  height: 100%;
+  width: 1px;
+  background-color: #e7e7e7;
+}
+
+.bars .bar:nth-child(n + 1):nth-child(-n + 15) {
+  background-color: #ffae33;
+}
+
+.time {
+  padding-left: 10px; /* Add spacing between times */
+}
+
+@media only screen and (max-width: 470px) {
+  .container {
+    width: 360px;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .container {
+    width: 320px;
+  }
+}
+
+.powerOn {
+  color: #ffae33;
+}
+
+span.room-status {
+  display: block;
+  /* border: solid 1px pink; */
+  margin: 20px 0 0 0;
+  color: #7c7c83;
+}
