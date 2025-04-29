@@ -32,7 +32,11 @@
         <div class="top-content">
           <h1 class="logo">Thermostat</h1>
           <select id="rooms"></select>
+            <button id="addRoomButton">
+            <ion-icon class="small-icon" name="add-circle"></ion-icon>
+            </button>
         </div>
+     
         <!-- Interior card -->
         <div class="room">
           <div class="text">
@@ -119,9 +123,37 @@
         </div>
       </div>
 
-      <div
-        class="container rooms-control animate__animated animate__fadeIn"
-      ></div>
+      <!-- adding room model -->
+       
+      <div id="addRoomModal" class="modal hidden">
+        <div class="modal-content">
+          <h2>Add New Room</h2>
+          <label for="roomName">Room Name:</label>
+          <input type="text" id="roomName" placeholder="Enter room name" />
+          <label for="initialTemp">Initial Temperature:</label>
+          <input type="number" id="initialTemp" placeholder="Enter initial temperature" />
+          <label for="startTime">Start Time:</label>
+        <input type="time" id="startTime" />
+        <label for="endTime">End Time:</label>
+        <input type="time" id="endTime" />
+          <button id="saveRoom">Save Room</button>
+          <button id="closeModal">Close</button>
+        </div>
+      </div>
+<div class="container">
+  <div
+  class="rooms-control animate__animated animate__fadeIn"
+>   
+</div>
+<div class="rooms-ac">
+  <button id="turnOnAllAC">Turn On All AC</button>
+</div>
+
+</div>
+   
+      <!-- <button id="addRoomButton">
+        <ion-icon class="small-icon" name="add-circle"></ion-icon>
+        </button>  -->
     </div>
 
     <!-- Ionicons -->
