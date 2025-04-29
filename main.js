@@ -143,14 +143,14 @@ const rooms = [
     },
   },
 ];
-
-const warmOverlay= `linear-gradient(
+// last bug
+const  coolOverlay = `linear-gradient(
     to bottom,
     rgba(141, 158, 247, 0.2),
     rgba(194, 197, 215, 0.1)
   )`;
 
-const coolOverlay = `linear-gradient(to bottom, rgba(236, 96, 98, 0.2), rgba(248, 210, 211, 0.13))`;
+const warmOverlay = `linear-gradient(to bottom, rgba(236, 96, 98, 0.2), rgba(248, 210, 211, 0.13))`;
 
 const setInitialOverlay = () => {
   document.querySelector(
@@ -241,7 +241,41 @@ roomSelect.addEventListener("change", function () {
 
 // Set preset temperatures
 const defaultSettings = document.querySelector(".default-settings");
-defaultSettings.addEventListener("click", function (e) {});
+
+defaultSettings.addEventListener("click", (e) => {
+  const room = rooms.find((currRoom) => currRoom.name === selectedRoom);
+
+  if (!room) return; 
+
+  if (e.target.id === "cool") {
+    // Apply the cool preset
+    room.setCurrTemp(room.coldPreset);
+    console.log(`Cool preset applied: ${room.coldPreset}°`);
+    setOverlay(room); 
+    updateRoomUI(room);
+  }
+
+  if (e.target.id === "warm") {
+    // Apply the warm preset
+    room.setCurrTemp(room.warmPreset);
+    console.log(`Warm preset applied: ${room.warmPreset}°`);
+    setOverlay(room); 
+    updateRoomUI(room);
+  }
+});
+
+// Function to update the room UI
+const updateRoomUI = (room) => {
+  setIndicatorPoint(room.currTemp); 
+  currentTemp.textContent = `${room.currTemp}°`; 
+  setOverlay(room); 
+  document.querySelector(".currentTemp").innerText = `${room.currTemp}°`;
+  
+  generateRooms();
+};
+
+
+  
 
 // Increase and decrease temperature
 document.getElementById("increase").addEventListener("click", () => {
@@ -298,57 +332,76 @@ document.getElementById("reduce").addEventListener("click", () => {
 const coolBtn = document.getElementById("cool");
 const warmBtn = document.getElementById("warm");
 
-
-const inputsDiv = document.querySelector(".inputs");
-// Toggle preset inputs
+// Set the default button to be selected
 document.getElementById("newPreset").addEventListener("click", () => {
   if (inputsDiv.classList.contains("hidden")) {
     inputsDiv.classList.remove("hidden");
+  } else {
+    inputsDiv.classList.add("hidden");
   }
 });
-
 // close inputs
 document.getElementById("close").addEventListener("click", () => {
   inputsDiv.classList.add("hidden");
 });
 
-// handle preset input data
-document.getElementById("save").addEventListener("click", () => {
+const inputsDiv = document.querySelector(".inputs");
+
+// Event delegation for handling preset temperatures
+inputsDiv.addEventListener("click", (e) => {
   const coolInput = document.getElementById("coolInput");
   const warmInput = document.getElementById("warmInput");
-
-  console.log(typeof +coolInput.value,typeof +warmInput.value)
-  
   const errorSpan = document.querySelector(".error");
 
+  if (e.target.id === "save") {
+    // Validate the inputs
+    if (!coolInput.value || !warmInput.value) {
+      errorSpan.style.display = "block";
+      errorSpan.innerText = "Both fields are required.";
+      return;
+    }
+
+    const coolValue = Number(coolInput.value);
+    const warmValue = Number(warmInput.value);
+
+    
   if (coolInput.value && warmInput.value ) {
-    errorSpan.style.display = "none";
-  
-  }
-// compairng a string and a number was the issue fourth issue
-  if (+coolInput.value && +warmInput.value) {
-    // Validate the data
-    if (Number(coolInput.value) < 10 || Number(coolInput.value) > 25) {
+    errorSpan.style.display = "none";}
+
+    if (coolValue < 10 || coolValue > 25) {
       errorSpan.style.display = "block";
-      errorSpan.innerText = "Enter valid temperatures (10° - 32°)";
+      errorSpan.innerText = "Enter valid temperatures (10° - 25° for cool).";
       return;
     }
 
-    if (+warmInput.value < 25 || +warmInput.value > 32) {
+    if (warmValue < 25 || warmValue > 32) {
       errorSpan.style.display = "block";
-      errorSpan.innerText = "Enter valid temperatures (10° - 32°)";
+      errorSpan.innerText = "Enter valid temperatures (25° - 32° for warm).";
       return;
     }
+
     // Validation passed
-    // Set current room's presets
+    errorSpan.style.display = "none";
+
     const currRoom = rooms.find((room) => room.name === selectedRoom);
+    currRoom.setColdPreset(coolValue);
+    currRoom.setWarmPreset(warmValue);
 
-    currRoom.setColdPreset(+coolInput.value);
-    currRoom.setWarmPreset(+warmInput.value);
+    console.log(currRoom.coldPreset, currRoom.warmPreset)
+    console.log(rooms)
 
+    // Clear the input fields
     coolInput.value = "";
     warmInput.value = "";
   }
+
+
+
+  if (e.target.id === "close") {
+    inputsDiv.classList.add("hidden");
+  }
+  //console.log to see that the delegation is working
+  console.log(e.target.id);
 });
 
 // Rooms Control
@@ -384,45 +437,46 @@ const generateRooms = () => {
 };
 const displayTime = (room) => {
   return `
-      <div class="time-display">
-        <span class="time">${room.startTime}</span>
-        <div class="bars">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </div>
-        <span class="time">${room.endTime}</span>
+    <div class="time-display" style="overflow-x: auto; white-space: nowrap;">
+      <span class="time">${room.startTime}</span>
+      <div class="bars" style="display: inline-block;">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
       </div>
-  `
+      <span class="time">${room.endTime}</span>
+    </div>
+    `;
 }
 
 generateRooms();
@@ -439,4 +493,108 @@ document.querySelector(".rooms-control").addEventListener("click", (e) => {
   if (e.target.classList.contains("room-name")) {
     setSelectedRoom(e.target.parentNode.parentNode.id);
   }
+});
+
+//working on the model for users to add their own rooms   
+// Modal elements
+const addRoomModal = document.getElementById("addRoomModal");
+const roomNameInput = document.getElementById("roomName");
+const initialTempInput = document.getElementById("initialTemp");
+const saveRoomButton = document.getElementById("saveRoom");
+const closeModalButton = document.getElementById("closeModal");
+
+// Open modal
+document.getElementById("addRoomButton").addEventListener("click", () => {
+  addRoomModal.classList.remove("hidden");
+});
+
+// Close modal
+closeModalButton.addEventListener("click", () => {
+  addRoomModal.classList.add("hidden");
+});
+
+// Save new room
+saveRoomButton.addEventListener("click", () => {
+  const roomName = roomNameInput.value.trim();
+  const initialTemp = Number(initialTempInput.value);
+  const startTime = document.getElementById("startTime").value;
+  const endTime =document.getElementById("endTime").value;
+
+  if (!roomName || isNaN(initialTemp) || initialTemp < 10 || initialTemp > 32) {
+    alert("Please enter a valid room name and temperature (10° - 32°).");
+    return;
+  }
+  if (!startTime || !endTime || !/^\d{2}:\d{2}$/.test(startTime) || !/^\d{2}:\d{2}$/.test(endTime)) {
+    alert("Please enter valid start and end times in HH:MM format.");
+    return;
+  }
+console.log(typeof startTime, typeof endTime)
+  // Add new room to the rooms array
+  rooms.push({
+    name: roomName,
+    currTemp: initialTemp,
+    coldPreset: 20, 
+    warmPreset: 32, 
+    image: "./assets/default-image.jpg", 
+    airConditionerOn: false,
+    startTime:startTime, 
+    endTime: endTime, 
+    
+
+    setCurrTemp(temp) {
+      this.currTemp = temp;
+    },
+
+    setColdPreset(newCold) {
+      this.coldPreset = newCold;
+    },
+
+    setWarmPreset(newWarm) {
+      this.warmPreset = newWarm;
+    },
+
+    decreaseTemp() {
+      if (this.currTemp > 10) this.currTemp--;
+    },
+
+    increaseTemp() {
+      if (this.currTemp < 32) this.currTemp++;
+    },
+
+    toggleAircon() {
+      this.airConditionerOn = !this.airConditionerOn;
+    },
+  });
+  console.log("second check",typeof startTime, typeof endTime)
+  // Update dropdown menu
+  const roomSelect = document.getElementById("rooms");
+  const option = document.createElement("option");
+  option.value = roomName;
+  option.textContent = roomName;
+  roomSelect.appendChild(option);
+
+  // Refresh the UI
+  generateRooms();
+
+  // Clear inputs and close modal
+  roomNameInput.value = "";
+  initialTempInput.value = "";
+  startTime.value = "";
+  endTime.value = "";
+  addRoomModal.classList.add("hidden");
+});
+
+
+// Turn on all air conditioners
+document.getElementById("turnOnAllAC").addEventListener("click", () => {
+  rooms.forEach((room) => {
+    if (!room.airConditionerOn) {
+      room.toggleAircon(); // Turn on the AC if it's off
+    } else{
+      room.toggleAircon(); 
+    }
+  });
+
+  console.log("All air conditioners turned on.");
+  generateRooms(); // Refresh the UI to reflect changes
 });

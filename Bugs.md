@@ -35,3 +35,9 @@
 - **Identification Method**: Reviewed the logic and used `console.log` to verify the condition and output.
 - **Solution**: Corrected the ternary operator to display the appropriate message: `${room.currTemp > 25 ? "Warming room to:" : "Cooling room to:"}`.
 
+## Bug 5: Image Overlay Error
+- **Line Numbers**: 147-153
+- **Type**: Logic Error
+- **Description**: The overlay declaration was incorrect. The value for the `coolOverlay` was that for the `warmOverlay`, causing the wrong overlay to appear.
+- **Identification Method**: Observed the incorrect overlay directly on the image during testing.
+- **Solution**: Corrected the overlay declaration by assigning the appropriate values to `coolOverlay` and `warmOverlay`.
