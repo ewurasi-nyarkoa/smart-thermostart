@@ -253,6 +253,9 @@ defaultSettings.addEventListener("click", (e) => {
     console.log(`Cool preset applied: ${room.coldPreset}°`);
     setOverlay(room); 
     updateRoomUI(room);
+    // Set the button background color to indicate selection
+    coolBtn.classList.toggle('cool');
+
   }
 
   if (e.target.id === "warm") {
@@ -261,6 +264,7 @@ defaultSettings.addEventListener("click", (e) => {
     console.log(`Warm preset applied: ${room.warmPreset}°`);
     setOverlay(room); 
     updateRoomUI(room);
+    warmBtn.classList.toggle('warm');
   }
 });
 
@@ -496,7 +500,6 @@ document.querySelector(".rooms-control").addEventListener("click", (e) => {
 });
 
 //working on the model for users to add their own rooms   
-// Modal elements
 const addRoomModal = document.getElementById("addRoomModal");
 const roomNameInput = document.getElementById("roomName");
 const initialTempInput = document.getElementById("initialTemp");
@@ -591,10 +594,34 @@ document.getElementById("turnOnAllAC").addEventListener("click", () => {
     if (!room.airConditionerOn) {
       room.toggleAircon(); // Turn on the AC if it's off
     } else{
-      room.toggleAircon(); 
+      room.toggleAircon(); // Turn off the AC if it's on
     }
   });
 
   console.log("All air conditioners turned on.");
-  generateRooms(); // Refresh the UI to reflect changes
+  generateRooms(); // reflect changes
 });
+
+
+// Function to check the schedule and toggle AC
+const checkSchedule = () => {
+  const currentTime = new Date().toTimeString().slice(0, 5); // Get current time in HH:MM format
+
+  rooms.forEach((room) => {
+    if (room.startTime === currentTime && !room.airConditionerOn) {
+      room.toggleAircon(); // Turn on the AC
+      console.log(`AC turned ON for ${room.name} at ${currentTime}`);
+    }
+
+    if (room.endTime === currentTime && room.airConditionerOn) {
+      room.toggleAircon(); // Turn off the AC
+      console.log(`AC turned OFF for ${room.name} at ${currentTime}`);
+    }
+  });
+
+  // Refresh the UI to reflect changes
+  generateRooms();
+};
+
+// Start checking the schedule every minute
+setInterval(checkSchedule, 60000); // 60000ms = 1 minute
