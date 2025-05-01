@@ -368,6 +368,42 @@ svg.point {
 .time {
   padding-left: 10px; /* Add spacing between times */
 }
+.cool{
+  /* display: hidden; */
+  background: linear-gradient(
+    to bottom,
+    rgba(141, 158, 247, 0.2),
+    rgba(194, 197, 215, 0.1)
+  );
+}
+
+.warm{
+  background: linear-gradient(
+    to bottom,
+    rgba(236, 96, 98, 0.2),
+    rgba(248, 210, 211, 0.13)
+  );
+}
+
+.small-icon{
+  width: 15px;
+  height: 15px;
+  margin: 0 5px;
+  display: flex;
+  cursor: pointer; 
+}
+#addRoomButton{
+  background-color: black;
+  color: white;
+  padding: 5px ;
+  border-radius: 5px;
+}
+.setting{
+  display: flex;
+  gap: 10px;
+  
+}
+
 
 .modal {
   position: fixed;
@@ -376,30 +412,80 @@ svg.point {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px); 
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
-.small-icon{
-  width: 15px;
-  height: 15px;
-  margin: 0 5px;
-  display: flex;
-  cursor: pointer; 
-}
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    justify-content: center;
-  }
 
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.modal-content label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+.modal-content .time-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.modal-content .time-row input {
+  width: 77%; 
+}
+
+.modal-content button {
+  padding: 10px;
+ margin: 10px ; 
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.modal-content #saveRoom {
+  background-color: black;
+  color: white;
+}
+
+.modal-content #closeModal {
+  background: rgba(236, 96, 98);
+  color: white;
+}
+.modal-buttons{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
 .hidden {
   display: none;
 }
