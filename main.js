@@ -235,14 +235,19 @@ document.getElementById("reduce").addEventListener("click", () => {
 const coolBtn = document.getElementById("cool");
 const warmBtn = document.getElementById("warm");
 
-// Set the default button to be selected
+
 document.getElementById("newPreset").addEventListener("click", () => {
+  if (!timeInputsDiv.classList.contains("hidden")) {
+    timeInputsDiv.classList.add("hidden"); // Hide the set time inputs if visible
+  }
+
   if (inputsDiv.classList.contains("hidden")) {
-    inputsDiv.classList.remove("hidden");
+    inputsDiv.classList.remove("hidden"); // Show the preset inputs
   } else {
-    inputsDiv.classList.add("hidden");
+    inputsDiv.classList.add("hidden"); // Hide the preset inputs
   }
 });
+
 // close inputs
 document.getElementById("close").addEventListener("click", () => {
   inputsDiv.classList.add("hidden");
@@ -304,7 +309,69 @@ inputsDiv.addEventListener("click", (e) => {
     inputsDiv.classList.add("hidden");
   }
   //console.log to see that the delegation is working
-  console.log(e.target.id);
+  // console.log(e.target.id);
+});
+
+
+// Function to handle time input and update the room's schedule
+const saveTimeButton = document.getElementById("saveTime");
+const closeTimeButton = document.getElementById("closeTime");
+const timeInputsDiv = document.querySelector(".time-inputs");
+
+saveTimeButton.addEventListener("click", () => {
+  const startTimeInput = document.getElementById("startTimeInput").value;
+  const endTimeInput = document.getElementById("endTimeInput").value;
+
+  // Validate time input
+  if (!startTimeInput || !endTimeInput) {
+    alert("Please enter both start and end times.");
+    return;
+  }
+
+  if (!/^\d{2}:\d{2}$/.test(startTimeInput) || !/^\d{2}:\d{2}$/.test(endTimeInput)) {
+    alert("Please enter valid times in HH:MM format.");
+    return;
+  }
+
+  // Find the selected room
+  const selectedRoomName = document.getElementById("rooms").value;
+  const room = rooms.find((currRoom) => currRoom.name === selectedRoomName);
+
+  if (!room) {
+    alert("Please select a valid room.");
+    return;
+  }
+ // Update the room's startTime and endTime
+  room.startTime = startTimeInput;
+  room.endTime = endTimeInput;
+
+  generateRooms();
+
+   //clear the input fields
+   document.getElementById("startTimeInput").value = "";
+   document.getElementById("endTimeInput").value = "";
+ 
+
+  // console.log(`Updated schedule for ${room.name}: Start Time - ${room.startTime}, End Time - ${room.endTime}`);
+// Hide the time inputs modal
+  timeInputsDiv.classList.add("hidden");
+});
+
+// Close the time inputs modal
+closeTimeButton.addEventListener("click", () => {
+  timeInputsDiv.classList.add("hidden");
+});
+
+document.getElementById("setTime").addEventListener("click", () => {
+  if (!inputsDiv.classList.contains("hidden")) {
+    inputsDiv.classList.add("hidden"); // Hide the preset inputs if visible
+  }
+  // Show the time inputs modal when "Schedule Time" button is clicked
+  if (timeInputsDiv.classList.contains("hidden")) {
+  timeInputsDiv.classList.remove("hidden");}
+  else {
+    timeInputsDiv.classList.add("hidden");
+  }
 });
 
 // Rooms Control
